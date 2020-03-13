@@ -12,16 +12,23 @@ RIOTBASE ?= $(CURDIR)/../RIOT
 # development process:
 DEVELHELP ?= 1
 
+# Set USB Information. Currently using non-unique.
+USB_VID ?= 1bda 
+USB_PID ?= 7D00
+
+# Network Info
+GNRC_NETIF_NUMOF := 2
+
 # USB Modules
 USEMODULE += usbus
 USEMODULE += auto_init_usbus
-# USEMODULE += usbus_cdc_ecm
+USEMODULE += usbus_cdc_ecm
 
 # Networking modules
 USEMODULE += gnrc_netdev_default
 USEMODULE += auto_init_gnrc_netif
 USEMODULE += gnrc_icmpv6_error
-# USEMODULE += gnrc_sixlowpan_border_router_default
+USEMODULE += gnrc_sixlowpan_border_router_default
 USEMODULE += gnrc_udp
 USEMODULE += gnrc_rpl
 USEMODULE += auto_init_gnrc_rpl
@@ -35,15 +42,11 @@ USEMODULE += ps
 # Misc modules
 USEMODULE += xtimer
 
-# Set USB Information. Currently using non-unique.
-USB_VID ?= 1bda 
-USB_PID ?= 7D00
-
 # Change this to 0 show compiler invocation lines by default:
 QUIET ?= 1
 
-include $(RIOTBASE)/Makefile.include
-
+# USB Options
 CFLAGS += -DCONFIG_USB_VID=0x$(USB_VID)
 CFLAGS += -DCONFIG_USB_PID=0x$(USB_PID)
 
+include $(RIOTBASE)/Makefile.include
