@@ -18,14 +18,14 @@ USEMODULE += auto_init_usbus
 # USEMODULE += usbus_cdc_ecm
 
 # Networking modules
-# USEMODULE += gnrc_netdev_default
-# USEMODULE += auto_init_gnrc_netif
-# USEMODULE += gnrc_icmpv6_error
+USEMODULE += gnrc_netdev_default
+USEMODULE += auto_init_gnrc_netif
+USEMODULE += gnrc_icmpv6_error
 # USEMODULE += gnrc_sixlowpan_border_router_default
-# USEMODULE += gnrc_udp
-# USEMODULE += gnrc_rpl
-# USEMODULE += auto_init_gnrc_rpl
-# USEMODULE += gnrc_icmpv6_echo
+USEMODULE += gnrc_udp
+USEMODULE += gnrc_rpl
+USEMODULE += auto_init_gnrc_rpl
+USEMODULE += gnrc_icmpv6_echo
 
 # Shell modules
 USEMODULE += shell
