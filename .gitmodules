@@ -1,0 +1,3 @@
+[submodule "RIOT"]
+	path = RIOT
+	url = https://github.com/chrysn-pull-requests/RIOT.git
