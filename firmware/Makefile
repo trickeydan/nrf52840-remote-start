@@ -12,9 +12,10 @@ RIOTBASE ?= $(CURDIR)/../RIOT
 # development process:
 DEVELHELP ?= 1
 
-# Set USB Information. Currently using non-unique.
-USB_VID ?= 1bda 
-USB_PID ?= 7D00
+# Set USB Information.
+# Using RIOT-OS Test PID.
+USB_VID ?= 1209 
+USB_PID ?= 7D01
 
 # Network Info
 GNRC_NETIF_NUMOF := 2
