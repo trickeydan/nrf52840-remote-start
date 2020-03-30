@@ -1,29 +1,19 @@
 #include <stdio.h>
 
-#include "board.h"
-#include "xtimer.h"
-
-#include "shell.h"
 #include "msg.h"
+#include "shell.h"
+#include "thread.h"
+
+#include "leds.h"
 
 #define MAIN_QUEUE_SIZE     (8)
 static msg_t _main_msg_queue[MAIN_QUEUE_SIZE];
-
-
-void start_flash(void) {
-    for(int i = 0; i < 4; i++){
-        LED0_ON;
-	xtimer_usleep(50000);
-	LED0_OFF;
-	xtimer_usleep(50000);
-    }
-}
 
 int main(void)
 {
     puts("Remote Start Dongle.");
 
-    start_flash();    
+    leds_init();    
 
     /* we need a message queue for the thread running the shell in order to
      * receive potentially fast incoming networking packets */
