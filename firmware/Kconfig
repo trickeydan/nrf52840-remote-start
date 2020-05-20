@@ -1,0 +1,11 @@
+config USB_VID
+    default 0x1bda
+
+config USB_PID
+    default 0x0012
+
+config USB_MANUF_STR
+    default "DGT"
+
+config USB_PRODUCT_STR
+    default "Remote Control Dongle"

@@ -12,11 +12,6 @@ RIOTBASE ?= $(CURDIR)/../RIOT
 # development process:
 DEVELHELP ?= 1
 
-# Set USB Information.
-# Using RIOT-OS Test PID.
-USB_VID ?= 1209 
-USB_PID ?= 7D01
-
 # Network Info
 GNRC_NETIF_NUMOF := 2
 
@@ -45,9 +40,5 @@ USEMODULE += xtimer
 
 # Change this to 0 show compiler invocation lines by default:
 QUIET ?= 1
-
-# USB Options
-CFLAGS += -DCONFIG_USB_VID=0x$(USB_VID)
-CFLAGS += -DCONFIG_USB_PID=0x$(USB_PID)
 
 include $(RIOTBASE)/Makefile.include
