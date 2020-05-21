@@ -35,11 +35,15 @@ CoAP requests are sent over 6LoWPAN using USB dongles from the competition serve
 
 \section{Introduction}
 
-Student Robotics is a UK charity that runs competitive robotics competitions for 16 - 18 year old students in the United Kingdom. Autonomous robots play a pre-defined game in an arena that measures approximately 8 metres by 8 metres. Students' code is loaded onto a USB flash drive and run on a single board computer (SBC). Peripherals such as motors, servos and sensors are connected to and controlled by the SBC over USB.
+Student Robotics (SR) is a UK charity that runs annual competitive robotics competitions for 16 - 18 year old students in the United Kingdom. Autonomous robots play a pre-defined game in an arena that measures approximately 8 metres by 8 metres. Students' code is loaded onto a USB flash drive and run on a single board computer (SBC). Peripherals such as motors, servos and sensors are connected to and controlled by the SBC over USB. Robots are given additional metadata such as arena corner and the length of the match using additional ``Match USBs'', which are USB flash drives.
 
-The competitions are split into a number of matches of a pre-defined length. Robots are started manually using a physical button on them, and execution of code is terminated by a management program on the SBC at the end of the match.
+The competitions are split into a number of matches of a pre-defined length. Robots are started manually using a physical button on them, and execution of code is terminated by a management program on the SBC at the end of the match. The physical button is pressed by a human, either a competitor or a volunteer, according to a countdown on screens within the venue. Screens show information according to a schedule, managed by bespoke software called `SRComp'
 
 \section{Problems with existing management method}
+
+Several issues exist with the current management systems for the competition, both logistical and for student and volunteer experience.
+
+As SR competitions are run by volunteers, there is usually a lack of staff running the event. It is also ideal to have as many volunteers as possible helping students fix and debug their robots during a fast paced competition. In order to fit as many matches as possible into the two day competition, they are scheduled as close as possible to each other, and time must be allocated to score, reset the arena and place the new robots in the arena. 
 
 - early start
 - takes ages
@@ -47,20 +51,35 @@ The competitions are split into a number of matches of a pre-defined length. Rob
 
 \section{Potential solutions}
 
-- Wifi (nope, IT restrictions, interference)
-- IR (nope)
-- Wires (only solves one problem)
-- Bluetooth Beacons
+Given the issues that could be resolved by communicating directly with robots, this is not the first attempt that has been made to create such a system. This section explores some of the potential communication techologies that could be used.
 
-This paper aims to build a solution based on 6LoWPAN.
+\subsection{WiFi (802.11b/g/n)}
+
+During debugging, robots broadcast a WiFi access point that students can connect to, view logs and stop their robot remotely. As the robots have the hardware to do this, it wouldn't be too difficult to connect to an arena network. However, using WiFi poses several additional challenges. Firstly, there are usually restrictions on broadcasting additional access points in venues, with many restricting users to their own wifi networks. ``Competition USBs'' would still be required to provide metadata. WiFi also suffers from congestion in public environments where there are crowds, usually from mobile hotspots.
+
+\subsection{Infrared}
+
+Infrared receivers could be fitted to robots, similar to a television remote. This would allow one-way communication with robots. However, stage lighting used in venues emits a wide range of light frequencies, often including broad spectrum infrared which would completely drown out any signals, making this impractical.
+
+\subsection{Detachable wires}
+
+This is the most simple solution to the remote start issue, requiring no additional hardware on robots, and a relay for each starting position in the arena. This would allow us to remotely ``press'' the start button on the robot. It would not, however, allow us to communicate with the robots after this point. This method also poses additional mechanical challenges, such as disconnecting the wires after the match has started.
+
+\subsection{Bluetooth and IEEE 802.15.4}
+
+Whilst Bluetooth and IEEE 802.15.4 are fundamentally different technologies, in our use case they are reasonably similar. Both protocols use 2.4GHz radio frequencies, and hardware for them is not available on our existing robot platform. Bluetooth has the advantage of ``beaconing'', whilst 802.15.4 allows us to layer IPv6 and interface with other computers natively. 
+
+This paper aims to build a solution based on 6LoWPAN over 802.15.4.
 
 \section{Building the dongles}
 
+When setting out for this project, I wanted to minimise changes to arena protocol so that volunteers do not need to be re-trained. Thus, I wanted any additional hardware to be in the form factor of a USB stick, to replace the ``Competition USBs''
+
 \subsection{Hardware}
 
-NRF52840 - Why
+For this project, the Nordic Semiconductor nRF52840 Dongle has been selected. As a simple USB stick containing the nRF52840 microprocessor, it is very cost effective, and is available for around £7 for unit in small quantities.
 
-Dongle - Why
+The nRF52840 is the flagship chip of the nRF52 series of low-power radio processors from Nordic. It has an ARM Cortex M4 CPU running at 64MHz with support for floating point operations, 1MB of Flash and 256KB of RAM. The built-in 2.4GHz transceiver is primarily marketed for Bluetooth 5.0 usage, but also supports IEEE 802.15.4 and ANT, a proprietry protocol from Nordic. As the robots are powered by large lithium-polymer batteries, power usage is not a huge concern for our use case compared to using an off the shelf product. It is worth noting that other processors in the nRF52 series also support the full featureset that we need, which would reduce costs if a custom product was manufactured.
 
 \subsection{Operating System}
 
